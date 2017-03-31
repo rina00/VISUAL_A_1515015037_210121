@@ -50,7 +50,7 @@ private DefaultTableModel model;
         kota = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         tambah = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        simpan = new javax.swing.JButton();
         update = new javax.swing.JButton();
         hapus = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
@@ -61,6 +61,11 @@ private DefaultTableModel model;
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
+            }
+        });
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
             }
         });
 
@@ -96,9 +101,20 @@ private DefaultTableModel model;
 
         jLabel4.setText("Kota Asal");
 
+        nama.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                namaCaretUpdate(evt);
+            }
+        });
         nama.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 namaKeyReleased(evt);
+            }
+        });
+
+        nomor.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                nomorCaretUpdate(evt);
             }
         });
 
@@ -147,16 +163,21 @@ private DefaultTableModel model;
                 tambahActionPerformed(evt);
             }
         });
-
-        jButton2.setText("Simpan");
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton2MouseClicked(evt);
+        tambah.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tambahKeyReleased(evt);
             }
         });
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+
+        simpan.setText("Simpan");
+        simpan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                simpanMouseClicked(evt);
+            }
+        });
+        simpan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                simpanActionPerformed(evt);
             }
         });
 
@@ -166,11 +187,21 @@ private DefaultTableModel model;
                 updateActionPerformed(evt);
             }
         });
+        update.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                updateKeyReleased(evt);
+            }
+        });
 
         hapus.setText("Hapus");
         hapus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 hapusActionPerformed(evt);
+            }
+        });
+        hapus.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                hapusKeyReleased(evt);
             }
         });
 
@@ -182,7 +213,7 @@ private DefaultTableModel model;
                 .addContainerGap()
                 .addComponent(tambah)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(simpan)
                 .addGap(27, 27, 27)
                 .addComponent(update)
                 .addGap(18, 18, 18)
@@ -193,7 +224,7 @@ private DefaultTableModel model;
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(tambah)
-                .addComponent(jButton2)
+                .addComponent(simpan)
                 .addComponent(update)
                 .addComponent(hapus))
         );
@@ -281,13 +312,13 @@ private DefaultTableModel model;
     }// </editor-fold>//GEN-END:initComponents
     
     
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+    private void simpanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_simpanMouseClicked
         // TODO add your handling code here:
        
                              
-    }//GEN-LAST:event_jButton2MouseClicked
+    }//GEN-LAST:event_simpanMouseClicked
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanActionPerformed
         // TODO add your handling code here:
          Object[] data = new Object[3];
         data[0] = nama.getText();
@@ -296,7 +327,7 @@ private DefaultTableModel model;
         
         model.addRow(data);
        
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_simpanActionPerformed
 
     private void tabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelMouseClicked
         // TODO add your handling code here:
@@ -313,7 +344,9 @@ private DefaultTableModel model;
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
+       
         InitTable();
+        
     }//GEN-LAST:event_formComponentShown
 
     private void namaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_namaKeyReleased
@@ -341,6 +374,7 @@ private DefaultTableModel model;
         tabel.setValueAt(nama.getText(), baris, 0);
         tabel.setValueAt(nomor.getText(), baris, 1);
         tabel.setValueAt(kota.getSelectedItem(), baris, 2);
+    
     }//GEN-LAST:event_updateActionPerformed
 
     private void hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusActionPerformed
@@ -349,6 +383,67 @@ private DefaultTableModel model;
         JOptionPane.showConfirmDialog(null,"yakin ingin mengahapus?");
         model.removeRow(baris);
     }//GEN-LAST:event_hapusActionPerformed
+
+    private void namaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_namaCaretUpdate
+        // TODO add your handling code here:
+        if(nama.getText().equals("")||nomor.getText().equals("")){
+            
+            simpan.setEnabled(false);
+            
+      
+        }else{
+            
+             simpan.setEnabled(true);
+            
+            
+        }
+    }//GEN-LAST:event_namaCaretUpdate
+
+    private void tambahKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tambahKeyReleased
+        // TODO add your handling code here:
+        if(nama.getText().equals("")||nomor.getText().equals("")){
+            tambah.setEnabled(false);
+        }else{
+            tambah.setEnabled(true);
+        }
+    }//GEN-LAST:event_tambahKeyReleased
+
+    private void nomorCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_nomorCaretUpdate
+        // TODO add your handling code here:
+        if(nama.getText().equals("")||nomor.getText().equals("")){
+           
+            simpan.setEnabled(false);
+           
+      
+        }else{
+            
+             simpan.setEnabled(true);
+            
+    }//GEN-LAST:event_nomorCaretUpdate
+
+    private void updateKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_updateKeyReleased
+
+         
+        
+    }//GEN-LAST:event_updateKeyReleased
+
+    private void hapusKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_hapusKeyReleased
+        // TODO add your handling code here:
+         if(nama.getText().equals("")||nomor.getText().equals("")){
+            tambah.setEnabled(false);
+        }else{
+            tambah.setEnabled(true);
+        }
+        
+    }//GEN-LAST:event_hapusKeyReleased
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        update.setEnabled(false);
+        hapus.setEnabled(false);
+        simpan.setEnabled(false);
+        
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments
@@ -387,7 +482,6 @@ private DefaultTableModel model;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton hapus;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -401,6 +495,7 @@ private DefaultTableModel model;
     private javax.swing.JComboBox<String> kota;
     private javax.swing.JTextField nama;
     private javax.swing.JTextField nomor;
+    private javax.swing.JButton simpan;
     private javax.swing.JTable tabel;
     private javax.swing.JButton tambah;
     private javax.swing.JButton update;
