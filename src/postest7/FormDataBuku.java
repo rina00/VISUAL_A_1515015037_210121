@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package postest6;
+package postest7;
 
 /**
  *
  * @author Asus
  */
+import postest6.*;
 import java.sql.*;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 public class FormDataBuku extends javax.swing.JFrame {
 private DefaultTableModel model; //ini untuk membuat model pada tabel
@@ -49,7 +51,7 @@ private DefaultTableModel model; //ini untuk membuat model pada tabel
                 
             }
         }
-     private void TambahData (){
+     private void TambahData (String judul1, String penulis1, String harga1){
             try{
                 String sql = 
            "INSERT INTO buku VALUES (NULL,'"+judul+"','"+penulis+"',"+harga+")";
@@ -59,6 +61,47 @@ private DefaultTableModel model; //ini untuk membuat model pada tabel
                 System.out.println(e.getMessage());
             }
     }
+     private void ValidasiData(String judul,String penulis,String harga){
+try{
+    String sql="select*from buku";
+    stt=con.createStatement();
+    rss=stt.executeQuery(sql);
+    boolean status = false;
+    while(rss.next()){
+        Object[] o=new Object[2];
+        o[0]=rss.getString("judul").toLowerCase();
+        o[1]=rss.getString("penulis").toLowerCase();
+        if(o[0].equals(judul.toLowerCase())&& o[1].equals(penulis.toLowerCase())){
+            JOptionPane.showMessageDialog(null,"Data Sudah ada");
+            status=false;
+            break;
+        }
+    }
+    if(status==true){
+        TambahData(judul,penulis,harga);
+    }
+}
+catch(SQLException e){
+    System.out.println(e.getMessage());
+}
+}
+     private void PencarianData(String by, String cari){//method untuk pencarian 
+        try{
+            String sql = "SELECT * FROM buku where "+by+" LIKE'%"+cari+"%';";//menampilkan seluruh isi tabel
+            stt = con.createStatement();
+            rss = stt.executeQuery(sql);
+            while(rss.next()){
+                Object[] data = new Object[4];//penambahan array yang akan ditambahkan ke tabel
+                data[0] = rss.getString("id");
+                data[1] = rss.getString("judul");
+                data[2] = rss.getString("penulis");
+                data[3] = rss.getString("harga");
+            model.addRow(data);
+            }
+    }catch(SQLException e){//digunakan untuk menangkap kesalahan
+            System.out.println(e.getMessage());
+    }
+        }
      
 
     /**
@@ -340,9 +383,7 @@ private DefaultTableModel model; //ini untuk membuat model pada tabel
         String Judul = judul.getText(); // untuk memberikan aksi pada tombol simpan
         String Penulis = penulis.getSelectedItem().toString();
         String Harga = harga.getText();
-        TambahData();
-        InitTable();
-        TambahData();
+     
         
     }//GEN-LAST:event_spnActionPerformed
 
@@ -472,6 +513,8 @@ private DefaultTableModel model; //ini untuk membuat model pada tabel
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(FormDataBuku.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
